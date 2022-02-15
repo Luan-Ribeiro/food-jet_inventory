@@ -92,11 +92,13 @@ public class InventoryService {
 
         var itemsRequest = orderRequestTO.items;
 
-        List<Inventory> inventoryList = findIngredientsOfBurguerCompose(itemsRequest);
-
-        updateListInventory(inventoryList);
-
-        return new OrderRequestResponse().builder().Status(OrderStatusEnum.ACCEPTED).build();
+        try {
+            List<Inventory> inventoryList = findIngredientsOfBurguerCompose(itemsRequest);
+            updateListInventory(inventoryList);
+            return OrderRequestResponse.builder().Status(OrderStatusEnum.ACCEPTED).build();
+        } catch (BusinessException e) {
+            return OrderRequestResponse.builder().Status(OrderStatusEnum.RECUSED).build();
+        }
     }
 
     private void updateListInventory(List<Inventory> inventoryList) {
@@ -111,7 +113,7 @@ public class InventoryService {
 
             var quantityItem = item.getQuantity();
 
-            Long burguerId = burguerRepository.findByName(item.getNameFood()).id;
+            Long burguerId = burguerRepository.findByName(item.getNameFood()).getId();
 
             List<BurguerInventory> burguerCompose = burguerInventoryRepository.findById(burguerId);
             if (Objects.isNull(burguerCompose)) {
@@ -127,21 +129,35 @@ public class InventoryService {
         List<Inventory> listOfIngredients) {
 
         for (BurguerInventory burguerInventory : burguerCompose) {
-            var ingrendientInventory = burguerInventory.inventory.name;
+            var ingrendientInventory = burguerInventory.getInventory().getName();
             var quantity = (burguerInventory.getQuantity() * quantityItem);
-            var isPresent = listOfIngredients.stream().anyMatch(inventory -> inventory.name.equals(ingrendientInventory));
+            var isPresent = listOfIngredients.stream()
+                .anyMatch(inventory -> inventory.getName().equals(ingrendientInventory));
 
             if (!isPresent) {
                 var inventory = burguerInventory.getInventory();
-                inventory.setQuantity(inventory.getQuantity() - quantity);
-                listOfIngredients.add(inventory);
+                var quantityFinal = inventory.getQuantity() - quantity;
+
+                listOfIngredients.add(verifyIfHaveSufficientIngredient(inventory, quantityFinal));
             } else {
-                listOfIngredients.stream().filter(inventory -> inventory.name.equals(ingrendientInventory))
+                listOfIngredients.stream().filter(inventory -> inventory.getName().equals(ingrendientInventory))
                     .findFirst()
-                    .ifPresent(inventory -> inventory.setQuantity(inventory.quantity - quantity));
+                    .ifPresent(inventory -> {
+                        var quantityFinal = inventory.getQuantity() - quantity;
+                        verifyIfHaveSufficientIngredient(inventory, quantityFinal);
+                    });
             }
         }
 
         return listOfIngredients;
+    }
+
+    private Inventory verifyIfHaveSufficientIngredient(Inventory inventory, long quantityFinal) {
+        if(quantityFinal > 0){
+          inventory.setQuantity(quantityFinal);
+          return inventory;
+        } else{
+            throw new BusinessException("Ingredients insufficient");
+        }
     }
 }
