@@ -15,5 +15,5 @@ import org.br.foodjet.service.InventoryService.OrderStatusEnum;
 @RegisterForReflection
 public class OrderRequestResponse {
 
-    public OrderStatusEnum Status;
+    private OrderStatusEnum Status;
 }

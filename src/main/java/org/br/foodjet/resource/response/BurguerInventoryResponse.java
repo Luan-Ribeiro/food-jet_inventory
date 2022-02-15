@@ -8,8 +8,8 @@ import org.br.foodjet.repository.entity.Inventory;
 @RegisterForReflection
 public class BurguerInventoryResponse {
 
-    public Long id;
-    public BurguerResponse burguer;
-    public Inventory inventory;
-    public Long quantity;
+    private Long id;
+    private BurguerResponse burguer;
+    private Inventory inventory;
+    private Long quantity;
 }

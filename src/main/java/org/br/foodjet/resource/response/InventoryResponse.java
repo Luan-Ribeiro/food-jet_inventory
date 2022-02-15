@@ -7,7 +7,7 @@ import lombok.Data;
 @RegisterForReflection
 public class InventoryResponse {
 
-    public Long id;
-    public String name;
-    public Long quantity;
+    private Long id;
+    private String name;
+    private Long quantity;
 }

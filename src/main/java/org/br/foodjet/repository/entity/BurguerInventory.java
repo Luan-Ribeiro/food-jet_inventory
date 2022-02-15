@@ -29,16 +29,16 @@ public class BurguerInventory extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     @Column(name = "id")
-    public Long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "burguer_id", referencedColumnName = "id")
-    public Burguer burguer;
+    private Burguer burguer;
 
     @ManyToOne
     @JoinColumn(name = "inventory_id", referencedColumnName = "id")
-    public Inventory inventory;
+    private Inventory inventory;
 
-    public Long quantity;
+    private Long quantity;
 
 }

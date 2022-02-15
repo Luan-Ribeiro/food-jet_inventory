@@ -21,11 +21,11 @@ public class  Inventory extends PanacheEntityBase {
 
     @Id
     @Column(name = "id")
-    public Long id;
+    private Long id;
 
     @Column(name = "name")
-    public String name;
+    private String name;
 
     @Column(name = "quantity")
-    public Long quantity;
+    private Long quantity;
 }
