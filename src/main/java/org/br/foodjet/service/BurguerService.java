@@ -3,7 +3,6 @@ package org.br.foodjet.service;
 import java.util.List;
 import java.util.Objects;
 import javax.enterprise.context.ApplicationScoped;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.br.foodjet.exception.BusinessException;
@@ -12,9 +11,8 @@ import org.br.foodjet.repository.BurguerRepository;
 import org.br.foodjet.repository.entity.Burguer;
 import org.br.foodjet.repository.entity.BurguerInventory;
 import org.br.foodjet.repository.entity.Inventory;
-import org.br.foodjet.resource.response.BurguerInventoryResponse;
 import org.br.foodjet.resource.response.BurguerResponse;
-import org.br.foodjet.resource.to.BurguerDTO;
+import org.br.foodjet.resource.to.BurguerTO;
 import org.br.foodjet.service.mapper.BurguerInventoryMapper;
 import org.br.foodjet.service.mapper.BurguerMapper;
 
@@ -33,7 +31,7 @@ public class BurguerService {
     }
 
 
-    public BurguerResponse save(BurguerDTO burguer) {
+    public BurguerResponse save(BurguerTO burguer) {
         if (Objects.isNull(burguer)) {
             return null;
         }
@@ -52,41 +50,16 @@ public class BurguerService {
        return burguerMapper.toBurguerResponse(burguer.getBurguer());
     }
 
-
-//    @Transactional
-//    public BurguerResponse update(Long id, Inventory to) {
-//        if (id == null) {
-//            return null;
-//        }
-//
-//        Burguer burguer = Burguer.findById(id);
-//        if (burguer == null) {
-//            throw new BusinessException("Inventory resource not found");
-//        }
-//
-//        if (Objects.nonNull(to.name)) {
-//            burguer.setName(to.name);
-//        }
-//
-//        if (Objects.nonNull(to.quantity)) {
-//            burguer.setQuantity(to.quantity);
-//        }
-//
-//        repository.update(burguer);
-//
-//        return burguerMapper.toBurguerResponse(burguer);
-//    }
-
-    public List<BurguerInventoryResponse> findById(Long id) {
-        if (id == null) {
+    public BurguerResponse findByName(String nameFood) {
+        if (nameFood == null) {
             return null;
         }
 
-        List<BurguerInventory> burguer = burguerInventoryRepository.findById(id);
+        Burguer burguer = repository.findByName(nameFood);
         if (Objects.isNull(burguer)) {
             throw new BusinessException("Resources not found");
         }
 
-        return burguerInventoryMapper.toResponseList(burguer);
+        return burguerMapper.toBurguerResponse(burguer);
     }
 }

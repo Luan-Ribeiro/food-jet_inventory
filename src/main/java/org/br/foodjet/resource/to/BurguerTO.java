@@ -8,7 +8,7 @@ import org.br.foodjet.repository.entity.Inventory;
 
 @RegisterForReflection
 @Data
-public class BurguerDTO {
+public class BurguerTO {
 
     public Burguer burguer;
 

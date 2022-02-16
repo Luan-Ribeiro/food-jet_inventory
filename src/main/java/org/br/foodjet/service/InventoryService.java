@@ -153,7 +153,7 @@ public class InventoryService {
     }
 
     private Inventory verifyIfHaveSufficientIngredient(Inventory inventory, long quantityFinal) {
-        if(quantityFinal > 0){
+        if(quantityFinal >= 0){
           inventory.setQuantity(quantityFinal);
           return inventory;
         } else{

@@ -10,12 +10,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
-import org.br.foodjet.resource.response.BurguerInventoryResponse;
 import org.br.foodjet.resource.response.BurguerResponse;
-import org.br.foodjet.resource.to.BurguerDTO;
+import org.br.foodjet.resource.to.BurguerTO;
 import org.br.foodjet.service.BurguerService;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.jboss.resteasy.annotations.jaxrs.QueryParam;
 import org.jboss.resteasy.reactive.ResponseStatus;
 
@@ -37,22 +35,14 @@ public class BurguerResource {
     @Produces(MediaType.APPLICATION_JSON)
     @ResponseStatus(value = HttpStatus.SC_CREATED)
     @Tag(name = "Burguer", description = "FoodJet")
-    public BurguerResponse save(BurguerDTO request) {
+    public BurguerResponse save(BurguerTO request) {
         return service.save(request);
     }
 
-//    @PUT
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Tag(name = "Burguer", description = "FoodJet")
-//    public BurguerResponse updateInventoryById(@PathParam("id") Long id, @RequestBody Burguer inventoryRequestTO) {
-//        return service.update(id, inventoryRequestTO);
-//    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
     @Tag(name = "Burguer", description = "FoodJet")
-    public List<BurguerInventoryResponse> findById(@Valid @NotBlank @PathParam("id") Long id ) {
-        return service.findById(id);
+    public BurguerResponse findByName(@Valid @NotBlank @QueryParam("nameBurguer") String nameBurguer ) {
+        return service.findByName(nameBurguer);
     }
 }
