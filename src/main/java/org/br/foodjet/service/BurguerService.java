@@ -10,10 +10,8 @@ import org.br.foodjet.repository.BurguerInventoryRepository;
 import org.br.foodjet.repository.BurguerRepository;
 import org.br.foodjet.repository.entity.Burguer;
 import org.br.foodjet.repository.entity.BurguerInventory;
-import org.br.foodjet.repository.entity.Inventory;
 import org.br.foodjet.resource.response.BurguerResponse;
 import org.br.foodjet.resource.to.BurguerTO;
-import org.br.foodjet.service.mapper.BurguerInventoryMapper;
 import org.br.foodjet.service.mapper.BurguerMapper;
 
 @Slf4j
@@ -24,7 +22,6 @@ public class BurguerService {
     private final BurguerRepository repository;
     private final BurguerInventoryRepository burguerInventoryRepository;
     private final BurguerMapper burguerMapper;
-    private final BurguerInventoryMapper burguerInventoryMapper;
 
     public List<BurguerResponse> listAll() {
         return burguerMapper.toBurguerResponseList(repository.listAll());
@@ -38,16 +35,16 @@ public class BurguerService {
 
         repository.save(burguer.getBurguer());
 
-        for(Inventory bi : burguer.getInventory()){
-            BurguerInventory biBuilder = BurguerInventory.builder()
+        burguer.getInventory().forEach(inventory -> {
+            BurguerInventory burguerInventory = BurguerInventory.builder()
                 .burguer(burguer.getBurguer())
-                .quantity(bi.getQuantity())
-                .inventory(bi).build();
+                .quantity(inventory.getQuantity())
+                .inventory(inventory).build();
 
-            burguerInventoryRepository.save(biBuilder);
-        }
+            burguerInventoryRepository.save(burguerInventory);
+        });
 
-       return burguerMapper.toBurguerResponse(burguer.getBurguer());
+        return burguerMapper.toBurguerResponse(burguer.getBurguer());
     }
 
     public BurguerResponse findByName(String nameFood) {
@@ -57,7 +54,7 @@ public class BurguerService {
 
         Burguer burguer = repository.findByName(nameFood);
         if (Objects.isNull(burguer)) {
-            throw new BusinessException("Resources not found");
+            throw new BusinessException("Burguer not found");
         }
 
         return burguerMapper.toBurguerResponse(burguer);

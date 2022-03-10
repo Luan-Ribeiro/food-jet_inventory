@@ -1,6 +1,7 @@
 package org.br.foodjet.resource.to;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import java.math.BigInteger;
 import lombok.Data;
 
 @Data
@@ -9,6 +10,6 @@ public class ItemTO {
 
     private String nameFood;
 
-    private int quantity;
+    private BigInteger quantity;
 
 }

@@ -3,6 +3,7 @@ package org.br.foodjet.repository.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import java.math.BigInteger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,6 +40,5 @@ public class BurguerInventory extends PanacheEntityBase {
     @JoinColumn(name = "inventory_id", referencedColumnName = "id")
     private Inventory inventory;
 
-    private Long quantity;
-
+    private BigInteger quantity;
 }
