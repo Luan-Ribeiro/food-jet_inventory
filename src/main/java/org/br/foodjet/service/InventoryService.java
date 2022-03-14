@@ -39,31 +39,21 @@ public class InventoryService {
 
     @Transactional
     public InventoryResponse saveIngredientsInInventory(Inventory inventory) {
-        if (Objects.isNull(inventory)) {
-            return null;
-        }
-
         repository.save(inventory);
+
         return mapper.toInventoryResponse(inventory);
     }
 
     @Transactional
-    public InventoryResponse update(Long id, Inventory request) {
-        if (id == null) {
-            return null;
-        }
+    public InventoryResponse update(Long id, BigInteger newQuantityItem) {
 
         Inventory inventory = Inventory.findById(id);
         if (inventory == null) {
             throw new BusinessException("Inventory resource not found");
         }
 
-        var requestName = request.getName();
-        var requestQuantity = request.getQuantity();
-
-        if (Objects.nonNull(requestName) && Objects.nonNull(requestQuantity)) {
-            inventory.setName(requestName);
-            inventory.setQuantity(requestQuantity);
+        if (Objects.nonNull(newQuantityItem)) {
+            inventory.setQuantity(newQuantityItem);
         }
 
         repository.update(inventory);
@@ -72,9 +62,6 @@ public class InventoryService {
     }
 
     public InventoryResponse findByName(String clientName) {
-        if (clientName == null) {
-            return null;
-        }
 
         Inventory listName = repository.findByName(clientName);
         if (Objects.isNull(listName)) {
@@ -86,11 +73,8 @@ public class InventoryService {
 
     @Transactional
     public OrderRequestResponse verifyOrderAndFlushIngredients(OrderRequestTO orderRequestTO) {
-        if (Objects.isNull(orderRequestTO) || Objects.isNull(orderRequestTO.items)) {
-            throw new BusinessException("Order request is invalid");
-        }
 
-        var itemsRequest = orderRequestTO.items;
+        var itemsRequest = orderRequestTO.getItems();
         List<Inventory> listOfIngredients = new ArrayList<>();
         BigDecimal valueFinal = new BigDecimal(0);
 
@@ -116,7 +100,7 @@ public class InventoryService {
         }
     }
 
-    private List<Inventory> readAndMakeListOfIngredients(List<BurguerInventory> burguerIngredients,
+    private void readAndMakeListOfIngredients(List<BurguerInventory> burguerIngredients,
         BigInteger quantityItem,
         List<Inventory> ingredientsInventoryList) {
 
@@ -138,8 +122,6 @@ public class InventoryService {
                         ingredientsInventoryList.add(verifyIfHaveSufficientIngredient(inventory, quantityFinal));
                     });
         });
-
-        return ingredientsInventoryList;
     }
 
     private Inventory verifyIfHaveSufficientIngredient(Inventory inventory, BigInteger quantityFinal) {

@@ -29,9 +29,6 @@ public class BurguerService {
 
 
     public BurguerResponse save(BurguerTO burguer) {
-        if (Objects.isNull(burguer)) {
-            return null;
-        }
 
         repository.save(burguer.getBurguer());
 
@@ -48,9 +45,6 @@ public class BurguerService {
     }
 
     public BurguerResponse findByName(String nameFood) {
-        if (nameFood == null) {
-            return null;
-        }
 
         Burguer burguer = repository.findByName(nameFood);
         if (Objects.isNull(burguer)) {

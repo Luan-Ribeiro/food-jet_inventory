@@ -16,9 +16,9 @@ public class BurguerInventoryRepository {
 
     private final EntityManager entityManager;
 
-    public void save(BurguerInventory burguer) {
-        log.info("Save burguer : {}", burguer);
-        burguer.persist();
+    public void save(BurguerInventory burguerInventory) {
+        log.info("Save burguer inventory : {}", burguerInventory);
+        burguerInventory.persist();
     }
 
     public List<BurguerInventory> findByName(String burguerName) {

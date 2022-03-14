@@ -5,7 +5,7 @@ import org.br.foodjet.repository.entity.Burguer;
 import org.br.foodjet.resource.response.BurguerResponse;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "cdi")
 public interface BurguerMapper {
 
     BurguerResponse toBurguerResponse(Burguer to);

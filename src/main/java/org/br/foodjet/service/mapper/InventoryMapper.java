@@ -5,7 +5,7 @@ import org.br.foodjet.repository.entity.Inventory;
 import org.br.foodjet.resource.response.InventoryResponse;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "cdi")
 public interface InventoryMapper {
 
     InventoryResponse toInventoryResponse(Inventory to);

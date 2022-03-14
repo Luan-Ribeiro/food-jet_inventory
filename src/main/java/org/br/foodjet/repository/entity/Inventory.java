@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -16,12 +18,15 @@ import lombok.Data;
 public class Inventory extends PanacheEntityBase {
 
     @Id
+    @NotNull
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @NotBlank
+    @Column(name = "name", unique = true)
     private String name;
 
+    @NotNull
     @Column(name = "quantity")
     private BigInteger quantity;
 }

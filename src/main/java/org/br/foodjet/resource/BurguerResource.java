@@ -1,8 +1,12 @@
 package org.br.foodjet.resource;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -17,8 +21,10 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.annotations.jaxrs.QueryParam;
 import org.jboss.resteasy.reactive.ResponseStatus;
 
-@RequiredArgsConstructor
 @Path("/burguer")
+@RequiredArgsConstructor
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
 public class BurguerResource {
 
     private final BurguerService service;
@@ -35,14 +41,14 @@ public class BurguerResource {
     @Produces(MediaType.APPLICATION_JSON)
     @ResponseStatus(value = HttpStatus.SC_CREATED)
     @Tag(name = "Burguer", description = "FoodJet")
-    public BurguerResponse save(BurguerTO request) {
+    public BurguerResponse save(@NotNull @Valid BurguerTO request) {
         return service.save(request);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Tag(name = "Burguer", description = "FoodJet")
-    public BurguerResponse findByName(@Valid @NotBlank @QueryParam("nameBurguer") String nameBurguer ) {
+    public BurguerResponse findByName(@NotBlank @QueryParam("nameBurguer") String nameBurguer) {
         return service.findByName(nameBurguer);
     }
 }

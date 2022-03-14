@@ -1,4 +1,4 @@
-package org.br.foodjet.resource.to;
+package org.br.foodjet.exception.to;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.AllArgsConstructor;

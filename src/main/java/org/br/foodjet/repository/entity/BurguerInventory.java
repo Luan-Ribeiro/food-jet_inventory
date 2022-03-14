@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,13 +33,16 @@ public class BurguerInventory extends PanacheEntityBase {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "burguer_id", referencedColumnName = "id")
     private Burguer burguer;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "inventory_id", referencedColumnName = "id")
     private Inventory inventory;
 
+    @NotNull
     private BigInteger quantity;
 }
