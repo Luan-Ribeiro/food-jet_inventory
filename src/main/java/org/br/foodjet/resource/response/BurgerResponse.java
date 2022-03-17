@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @RegisterForReflection
-public class BurguerResponse {
+public class BurgerResponse {
 
     private Long id;
     private String name;

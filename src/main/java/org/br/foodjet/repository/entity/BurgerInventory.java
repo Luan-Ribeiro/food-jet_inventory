@@ -24,8 +24,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "burguer_inventory")
-public class BurguerInventory extends PanacheEntityBase {
+@Table(name = "burger_inventory")
+public class BurgerInventory extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +35,8 @@ public class BurguerInventory extends PanacheEntityBase {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "burguer_id", referencedColumnName = "id")
-    private Burguer burguer;
+    @JoinColumn(name = "burger_id", referencedColumnName = "id")
+    private Burger burger;
 
     @NotNull
     @ManyToOne

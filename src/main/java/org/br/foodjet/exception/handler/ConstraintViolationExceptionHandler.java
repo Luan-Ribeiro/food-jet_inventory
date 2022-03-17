@@ -14,7 +14,6 @@ public class ConstraintViolationExceptionHandler extends ExceptionHandler<ArcUnd
 
     @Override
     protected Response getResponse(Throwable throwable) {
-
         return super.getResponse(Throwables.getRootCause(throwable));
     }
 

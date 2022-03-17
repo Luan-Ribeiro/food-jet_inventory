@@ -7,10 +7,10 @@ import org.br.foodjet.repository.entity.Inventory;
 
 @Data
 @RegisterForReflection
-public class BurguerInventoryResponse {
+public class BurgerInventoryResponse {
 
     private Long id;
-    private BurguerResponse burguer;
+    private BurgerResponse burger;
     private Inventory inventory;
     private BigInteger quantity;
 }

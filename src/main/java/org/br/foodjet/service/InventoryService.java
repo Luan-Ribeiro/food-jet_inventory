@@ -10,9 +10,9 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.br.foodjet.exception.BusinessException;
-import org.br.foodjet.repository.BurguerInventoryRepository;
+import org.br.foodjet.repository.BurgerInventoryRepository;
 import org.br.foodjet.repository.InventoryRepository;
-import org.br.foodjet.repository.entity.BurguerInventory;
+import org.br.foodjet.repository.entity.BurgerInventory;
 import org.br.foodjet.repository.entity.Inventory;
 import org.br.foodjet.resource.response.InventoryResponse;
 import org.br.foodjet.resource.response.OrderRequestResponse;
@@ -27,7 +27,7 @@ public class InventoryService {
 
     private final InventoryRepository repository;
     private final InventoryMapper mapper;
-    private final BurguerInventoryRepository burguerInventoryRepository;
+    private final BurgerInventoryRepository burgerInventoryRepository;
 
     public enum OrderStatusEnum {
         ACCEPTED, RECUSED
@@ -37,10 +37,8 @@ public class InventoryService {
         return mapper.toInventoryResponseList(repository.listAll());
     }
 
-    @Transactional
     public InventoryResponse saveIngredientsInInventory(Inventory inventory) {
         repository.save(inventory);
-
         return mapper.toInventoryResponse(inventory);
     }
 
@@ -48,13 +46,11 @@ public class InventoryService {
     public InventoryResponse update(Long id, BigInteger newQuantityItem) {
 
         Inventory inventory = Inventory.findById(id);
-        if (inventory == null) {
+        if (Objects.isNull(inventory)) {
             throw new BusinessException("Inventory resource not found");
         }
 
-        if (Objects.nonNull(newQuantityItem)) {
-            inventory.setQuantity(newQuantityItem);
-        }
+        inventory.setQuantity(newQuantityItem);
 
         repository.update(inventory);
 
@@ -82,32 +78,33 @@ public class InventoryService {
 
             for (ItemTO item : itemsRequest) {
                 var itemQuantity = item.getQuantity();
-                List<BurguerInventory> burguerInventoryList = burguerInventoryRepository.findByName(item.getNameFood());
+                List<BurgerInventory> burgerInventoryList = burgerInventoryRepository.findByName(item.getNameFood());
 
-                if (Objects.isNull(burguerInventoryList)) {
-                    throw new BusinessException("Resources not found");
+                if (burgerInventoryList.isEmpty()) {
+                    throw new BusinessException("Burger not found in the menu");
                 }
 
-                readAndMakeListOfIngredients(burguerInventoryList, itemQuantity,
+                readAndMakeListOfIngredients(burgerInventoryList, itemQuantity,
                     listOfIngredients);
-                valueFinal = valueFinal.add(calculateItemValue(burguerInventoryList, itemQuantity));
+                valueFinal = valueFinal.add(calculateItemValue(burgerInventoryList, itemQuantity));
             }
 
             updateListInventory(listOfIngredients);
             return OrderRequestResponse.builder().Status(OrderStatusEnum.ACCEPTED).valueTotal(valueFinal).build();
         } catch (BusinessException e) {
-            return OrderRequestResponse.builder().Status(OrderStatusEnum.RECUSED).build();
+            log.info("Order was recused because : {}", e.getMessage());
+            return OrderRequestResponse.builder().Status(OrderStatusEnum.RECUSED).reason(e.getMessage()).build();
         }
     }
 
-    private void readAndMakeListOfIngredients(List<BurguerInventory> burguerIngredients,
+    private void readAndMakeListOfIngredients(List<BurgerInventory> burgerIngredients,
         BigInteger quantityItem,
         List<Inventory> ingredientsInventoryList) {
 
-        burguerIngredients.forEach(burguerInventory -> {
-            var inventory = burguerInventory.getInventory();
+        burgerIngredients.forEach(burgerInventory -> {
+            var inventory = burgerInventory.getInventory();
             var ingredientInventoryName = inventory.getName();
-            var quantityIngredientNecessary = (burguerInventory.getQuantity().multiply(quantityItem));
+            var quantityIngredientNecessary = (burgerInventory.getQuantity().multiply(quantityItem));
 
             ingredientsInventoryList.stream()
                 .filter(inventoryOnCache -> inventoryOnCache.getName().equals(ingredientInventoryName))
@@ -126,17 +123,15 @@ public class InventoryService {
 
     private Inventory verifyIfHaveSufficientIngredient(Inventory inventory, BigInteger quantityFinal) {
         if (quantityFinal.longValue() < 0) {
-            throw new BusinessException("Ingredients insufficient");
+            throw new BusinessException("Burger unavailable");
         }
         inventory.setQuantity(quantityFinal);
         return inventory;
     }
 
-    private BigDecimal calculateItemValue(List<BurguerInventory> burguerInventoryList, BigInteger itemQuantity) {
-        BigDecimal valueBurguer;
-        valueBurguer = burguerInventoryList.get(0).getBurguer().getValue();
-
-        return (valueBurguer.multiply(new BigDecimal(itemQuantity)));
+    private BigDecimal calculateItemValue(List<BurgerInventory> burgerInventoryList, BigInteger itemQuantity) {
+        BigDecimal valueBurger = burgerInventoryList.get(0).getBurger().getValue();
+        return (valueBurger.multiply(new BigDecimal(itemQuantity)));
     }
 
     private void updateListInventory(List<Inventory> inventoryList) {

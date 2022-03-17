@@ -17,8 +17,8 @@ import lombok.Data;
 @Data
 @RegisterForReflection
 @Entity
-@Table(name = "burguer")
-public class Burguer extends PanacheEntityBase {
+@Table(name = "burger")
+public class Burger extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

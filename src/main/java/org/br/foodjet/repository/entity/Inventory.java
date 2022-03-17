@@ -10,11 +10,19 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 @Data
 @RegisterForReflection
 @Entity
 @Table(name = "inventory")
+@Schema(example = """
+    {
+          "id": 1,
+          "name": "bun",
+          "quantity": 500
+    }
+    """)
 public class Inventory extends PanacheEntityBase {
 
     @Id
