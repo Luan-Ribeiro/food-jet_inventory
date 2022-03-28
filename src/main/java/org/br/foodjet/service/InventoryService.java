@@ -45,7 +45,7 @@ public class InventoryService {
     @Transactional
     public InventoryResponse update(Long id, BigInteger newQuantityItem) {
 
-        Inventory inventory = Inventory.findById(id);
+        Inventory inventory = repository.findById(id);
         if (Objects.isNull(inventory)) {
             throw new BusinessException("Inventory resource not found");
         }

@@ -1,8 +1,8 @@
 package org.br.foodjet.repository;
 
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
-import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.br.foodjet.repository.entity.Inventory;
@@ -10,26 +10,25 @@ import org.br.foodjet.repository.entity.Inventory;
 @Slf4j
 @ApplicationScoped
 @AllArgsConstructor
-@Transactional
-public class InventoryRepository {
+public class InventoryRepository implements PanacheRepository<Inventory> {
 
 
     public List<Inventory> listAll() {
-        return Inventory.listAll();
+        return findAll().list();
     }
 
     public void save(Inventory inventory) {
         log.info("Save request in inventory : {}", inventory);
-        inventory.persist();
+        persist(inventory);
     }
 
     public Inventory findByName(String inventoryName) {
         log.info("Loading Inventory by Name: {}", inventoryName);
-        return Inventory.find("name", inventoryName).firstResult();
+        return find("name", inventoryName).firstResult();
     }
 
     public void update(Inventory inventory) {
-        inventory.persistAndFlush();
+        persistAndFlush(inventory);
     }
 
 }

@@ -1,8 +1,8 @@
 package org.br.foodjet.repository;
 
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
-import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.br.foodjet.repository.entity.Burger;
@@ -10,26 +10,21 @@ import org.br.foodjet.repository.entity.Burger;
 @Slf4j
 @ApplicationScoped
 @AllArgsConstructor
-@Transactional
-public class BurgerRepository {
+public class BurgerRepository implements PanacheRepository<Burger> {
 
 
     public List<Burger> listAll() {
-        return Burger.listAll();
+        return findAll().list();
     }
 
     public void save(Burger burger) {
         log.info("Save burger : {}", burger);
-        burger.persist();
+        persist(burger);
     }
 
     public Burger findByName(String burgerName) {
         log.info("Loading Burger by Name: {}", burgerName);
-        return Burger.find("name", burgerName).firstResult();
-    }
-
-    public void update(Burger burger) {
-        burger.persistAndFlush();
+        return find("name", burgerName).firstResult();
     }
 
 }

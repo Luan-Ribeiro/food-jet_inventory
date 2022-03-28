@@ -1,5 +1,6 @@
 package org.br.foodjet.repository;
 
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
@@ -14,15 +15,15 @@ import org.br.foodjet.repository.entity.BurgerInventory;
 @Transactional
 public class BurgerInventoryRepository {
 
-    private final EntityManager entityManager;
+public class BurgerInventoryRepository implements PanacheRepository<BurgerInventory> {
 
     public void save(BurgerInventory burgerInventory) {
-        burgerInventory.persist();
+        persist(burgerInventory);
     }
 
     public List<BurgerInventory> findByName(String burgerName) {
         log.info("Loading Burger by name: {}", burgerName);
-        return entityManager.createNativeQuery("select id,quantity,burger_id,inventory_id from burger_inventory\n"
+        return getEntityManager().createNativeQuery("select id,quantity,burger_id,inventory_id from burger_inventory\n"
                     + "where burger_id in (select id from burger where name = '" + burgerName + "')",
                 BurgerInventory.class)
             .getResultList();

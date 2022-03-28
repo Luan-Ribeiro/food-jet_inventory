@@ -1,7 +1,6 @@
 package org.br.foodjet.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.math.BigInteger;
 import javax.persistence.Column;
@@ -25,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "burger_inventory")
-public class BurgerInventory extends PanacheEntityBase {
+public class BurgerInventory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
