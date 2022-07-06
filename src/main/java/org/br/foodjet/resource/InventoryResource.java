@@ -18,7 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.br.foodjet.exception.to.ErrorDetailTO;
-import org.br.foodjet.repository.entity.Inventory;
+import org.br.foodjet.entity.Inventory;
 import org.br.foodjet.resource.response.InventoryResponse;
 import org.br.foodjet.resource.response.OrderRequestResponse;
 import org.br.foodjet.resource.to.OrderRequestTO;

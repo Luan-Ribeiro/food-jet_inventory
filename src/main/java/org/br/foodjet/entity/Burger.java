@@ -1,7 +1,6 @@
-package org.br.foodjet.repository.entity;
+package org.br.foodjet.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.math.BigDecimal;
 import javax.persistence.Column;

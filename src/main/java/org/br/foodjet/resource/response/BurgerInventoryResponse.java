@@ -3,7 +3,7 @@ package org.br.foodjet.resource.response;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.math.BigInteger;
 import lombok.Data;
-import org.br.foodjet.repository.entity.Inventory;
+import org.br.foodjet.entity.Inventory;
 
 @Data
 @RegisterForReflection

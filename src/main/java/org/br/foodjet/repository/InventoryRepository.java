@@ -5,7 +5,7 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.br.foodjet.repository.entity.Inventory;
+import org.br.foodjet.entity.Inventory;
 
 @Slf4j
 @ApplicationScoped

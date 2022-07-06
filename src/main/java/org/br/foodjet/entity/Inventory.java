@@ -1,4 +1,4 @@
-package org.br.foodjet.repository.entity;
+package org.br.foodjet.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.annotations.RegisterForReflection;

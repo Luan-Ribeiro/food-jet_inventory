@@ -1,4 +1,4 @@
-package org.br.foodjet.repository.entity;
+package org.br.foodjet.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.runtime.annotations.RegisterForReflection;

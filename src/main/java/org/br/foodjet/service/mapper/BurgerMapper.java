@@ -1,7 +1,7 @@
 package org.br.foodjet.service.mapper;
 
 import java.util.List;
-import org.br.foodjet.repository.entity.Burger;
+import org.br.foodjet.entity.Burger;
 import org.br.foodjet.resource.response.BurgerResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

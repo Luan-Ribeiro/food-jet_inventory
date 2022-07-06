@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.enterprise.context.ApplicationScoped;
+import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,8 @@ import org.br.foodjet.exception.BusinessException;
 import org.br.foodjet.repository.BurgerInventoryRepository;
 import org.br.foodjet.repository.BurgerRepository;
 import org.br.foodjet.repository.InventoryRepository;
-import org.br.foodjet.repository.entity.Burger;
-import org.br.foodjet.repository.entity.BurgerInventory;
+import org.br.foodjet.entity.Burger;
+import org.br.foodjet.entity.BurgerInventory;
 import org.br.foodjet.resource.response.BurgerResponse;
 import org.br.foodjet.resource.to.BurgerTO;
 import org.br.foodjet.service.mapper.BurgerMapper;
@@ -32,7 +33,7 @@ public class BurgerService {
         return burgerMapper.toBurgerResponseList(repository.listAll());
     }
 
-
+    @Transactional
     public Response save(BurgerTO burger) {
         if (ingrendientsHasValid(burger)) {
             repository.save(burger.getBurger());

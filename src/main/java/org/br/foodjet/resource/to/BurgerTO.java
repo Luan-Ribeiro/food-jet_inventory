@@ -5,8 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
-import org.br.foodjet.repository.entity.Burger;
-import org.br.foodjet.repository.entity.Inventory;
+import org.br.foodjet.entity.Burger;
+import org.br.foodjet.entity.Inventory;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 @RegisterForReflection
